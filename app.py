@@ -431,7 +431,7 @@ workflow = graph.compile()
 @app.post('/Agent')
 def Query(query:str = Body(...)):
     initial_state={'query':query}
-    final = workflow.invoke(initial_state, config=config)
+    final = workflow.invoke(initial_state)
     return JSONResponse(status_code = 200, content = final)
 
 
