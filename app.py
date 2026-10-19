@@ -72,7 +72,7 @@ def EyecareTool(
         'appointment_fee':appointment_fee,
         'time':time
         }
-    API = "mongodb://zeeshanalizafar53_db_user:K0Ae9OB2vKrhJOhP@ac-xw9edx7-shard-00-00.laivntp.mongodb.net:27017,ac-xw9edx7-shard-00-01.laivntp.mongodb.net:27017,ac-xw9edx7-shard-00-02.laivntp.mongodb.net:27017/?ssl=true&replicaSet=atlas-j0742x-shard-0&authSource=admin&appName=AI-Database"
+    API = ""
     res = requests.post(API,payload)
     final = res.json()
     #EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointment_fee)
@@ -107,7 +107,7 @@ def DentalTool(
         'desc':desc,
         'appointment_fee':appointment_fee
         }
-    API = "mongodb://zeeshanalizafar53_db_user:K0Ae9OB2vKrhJOhP@ac-xw9edx7-shard-00-00.laivntp.mongodb.net:27017,ac-xw9edx7-shard-00-01.laivntp.mongodb.net:27017,ac-xw9edx7-shard-00-02.laivntp.mongodb.net:27017/?ssl=true&replicaSet=atlas-j0742x-shard-0&authSource=admin&appName=AI-Database"
+    API = ""
     res = requests.post(API,payload)
     final = res.json()
     #EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointment_fee)
@@ -142,7 +142,7 @@ def SpeechTool(
         'desc':desc,
         'appointment_fee':appointment_fee
         }
-    API = "mongodb://zeeshanalizafar53_db_user:K0Ae9OB2vKrhJOhP@ac-xw9edx7-shard-00-00.laivntp.mongodb.net:27017,ac-xw9edx7-shard-00-01.laivntp.mongodb.net:27017,ac-xw9edx7-shard-00-02.laivntp.mongodb.net:27017/?ssl=true&replicaSet=atlas-j0742x-shard-0&authSource=admin&appName=AI-Database"
+    API = ""
     res = requests.post(API,payload)
     final = res.json()
     #EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointment_fee)
@@ -177,7 +177,7 @@ def MentalTool(
         'desc':desc,
         'appointment_fee':appointment_fee
         }
-    API = "mongodb://zeeshanalizafar53_db_user:K0Ae9OB2vKrhJOhP@ac-xw9edx7-shard-00-00.laivntp.mongodb.net:27017,ac-xw9edx7-shard-00-01.laivntp.mongodb.net:27017,ac-xw9edx7-shard-00-02.laivntp.mongodb.net:27017/?ssl=true&replicaSet=atlas-j0742x-shard-0&authSource=admin&appName=AI-Database"
+    API = ""
     res = requests.post(API,payload)
     final = res.json()
     #EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointment_fee)
@@ -211,7 +211,7 @@ def PhysioTool(
         'desc':desc,
         'appointment_fee':appointment_fee
         }
-    API = "mongodb://zeeshanalizafar53_db_user:K0Ae9OB2vKrhJOhP@ac-xw9edx7-shard-00-00.laivntp.mongodb.net:27017,ac-xw9edx7-shard-00-01.laivntp.mongodb.net:27017,ac-xw9edx7-shard-00-02.laivntp.mongodb.net:27017/?ssl=true&replicaSet=atlas-j0742x-shard-0&authSource=admin&appName=AI-Database"
+    API = ""
     res = requests.post(API,payload)
     final = res.json()
     #EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointment_fee)
