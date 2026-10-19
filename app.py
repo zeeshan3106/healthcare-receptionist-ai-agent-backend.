@@ -236,7 +236,8 @@ def Analyze(State:State):
 
 def Eyecare(State:State):
     query = State['query']
-    API = "mongodb://zeeshanalizafar53_db_user:K0Ae9OB2vKrhJOhP@ac-xw9edx7-shard-00-00.laivntp.mongodb.net:27017,ac-xw9edx7-shard-00-01.laivntp.mongodb.net:27017,ac-xw9edx7-shard-00-02.laivntp.mongodb.net:27017/?ssl=true&replicaSet=atlas-j0742x-shard-0&authSource=admin&appName=AI-Database"
+    API = ""
+   
     collection = State['dept']
     client = MongoClient(API)
     database = client['MTHC']
@@ -267,7 +268,6 @@ def Eyecare(State:State):
 
 def Dental(State:State):
     query = State['query']
-    API = "mongodb://zeeshanalizafar53_db_user:K0Ae9OB2vKrhJOhP@ac-xw9edx7-shard-00-00.laivntp.mongodb.net:27017,ac-xw9edx7-shard-00-01.laivntp.mongodb.net:27017,ac-xw9edx7-shard-00-02.laivntp.mongodb.net:27017/?ssl=true&replicaSet=atlas-j0742x-shard-0&authSource=admin&appName=AI-Database"
     collection = State['dept']
     client = MongoClient(API)
     database = client['MTHC']
@@ -297,7 +297,6 @@ def Dental(State:State):
 
 def Speech(State:State):
     query = State['query']
-    API = "mongodb://zeeshanalizafar53_db_user:K0Ae9OB2vKrhJOhP@ac-xw9edx7-shard-00-00.laivntp.mongodb.net:27017,ac-xw9edx7-shard-00-01.laivntp.mongodb.net:27017,ac-xw9edx7-shard-00-02.laivntp.mongodb.net:27017/?ssl=true&replicaSet=atlas-j0742x-shard-0&authSource=admin&appName=AI-Database"
     collection = State['dept']
     client = MongoClient(API)
     database = client['MTHC']
@@ -329,7 +328,6 @@ def Speech(State:State):
 
 def Mental(State:State):
     query = State['query']
-    API = "mongodb://zeeshanalizafar53_db_user:K0Ae9OB2vKrhJOhP@ac-xw9edx7-shard-00-00.laivntp.mongodb.net:27017,ac-xw9edx7-shard-00-01.laivntp.mongodb.net:27017,ac-xw9edx7-shard-00-02.laivntp.mongodb.net:27017/?ssl=true&replicaSet=atlas-j0742x-shard-0&authSource=admin&appName=AI-Database"
     collection = State['dept']
     client = MongoClient(API)
     database = client['MTHC']
@@ -359,7 +357,6 @@ def Mental(State:State):
 
 def Physio(State:State):
     query = State['query']
-    API = "mongodb://zeeshanalizafar53_db_user:K0Ae9OB2vKrhJOhP@ac-xw9edx7-shard-00-00.laivntp.mongodb.net:27017,ac-xw9edx7-shard-00-01.laivntp.mongodb.net:27017,ac-xw9edx7-shard-00-02.laivntp.mongodb.net:27017/?ssl=true&replicaSet=atlas-j0742x-shard-0&authSource=admin&appName=AI-Database"
     collection = State['dept']
     client = MongoClient(API)
     database = client['MTHC']
