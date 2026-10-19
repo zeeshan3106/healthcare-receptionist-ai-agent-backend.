@@ -12,11 +12,12 @@ from fastapi import FastAPI,Body
 from fastapi.responses import JSONResponse
 from mthcemail import EmailSend
 from fastapi.middleware.cors import CORSMiddleware
-
+import os
 load_dotenv()
 model = ChatGoogleGenerativeAI(model="gemini-3.1-flash-lite")
 embedding = GoogleGenerativeAIEmbeddings(model = "gemini-embedding-001")
 app = FastAPI()
+API = os.getenv("API")
 
 app.add_middleware(
     CORSMiddleware,
@@ -236,7 +237,7 @@ def Analyze(State:State):
 
 def Eyecare(State:State):
     query = State['query']
-    API = ""
+    
    
     collection = State['dept']
     client = MongoClient(API)
@@ -269,7 +270,7 @@ def Eyecare(State:State):
 def Dental(State:State):
     query = State['query']
     collection = State['dept']
-    API = ""
+    
     client = MongoClient(API)
     database = client['MTHC']
     collection = database[collection]
@@ -299,7 +300,7 @@ def Dental(State:State):
 def Speech(State:State):
     query = State['query']
     collection = State['dept']
-    API = ""
+    
     client = MongoClient(API)
     database = client['MTHC']
     collection = database[collection]
@@ -331,7 +332,7 @@ def Speech(State:State):
 def Mental(State:State):
     query = State['query']
     collection = State['dept']
-    API = ""
+    
     client = MongoClient(API)
     database = client['MTHC']
     collection = database[collection]
@@ -361,7 +362,7 @@ def Mental(State:State):
 def Physio(State:State):
     query = State['query']
     collection = State['dept']
-    API = ""
+    
     client = MongoClient(API)
     database = client['MTHC']
     collection = database[collection]
