@@ -269,6 +269,7 @@ def Eyecare(State:State):
 def Dental(State:State):
     query = State['query']
     collection = State['dept']
+    API = ""
     client = MongoClient(API)
     database = client['MTHC']
     collection = database[collection]
@@ -298,6 +299,7 @@ def Dental(State:State):
 def Speech(State:State):
     query = State['query']
     collection = State['dept']
+    API = ""
     client = MongoClient(API)
     database = client['MTHC']
     collection = database[collection]
@@ -329,6 +331,7 @@ def Speech(State:State):
 def Mental(State:State):
     query = State['query']
     collection = State['dept']
+    API = ""
     client = MongoClient(API)
     database = client['MTHC']
     collection = database[collection]
@@ -358,6 +361,7 @@ def Mental(State:State):
 def Physio(State:State):
     query = State['query']
     collection = State['dept']
+    API = ""
     client = MongoClient(API)
     database = client['MTHC']
     collection = database[collection]
