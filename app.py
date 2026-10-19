@@ -422,10 +422,10 @@ graph.add_edge('speech',END)
 graph.add_edge('mental',END)
 graph.add_edge('pysio',END)
 
-connect = sqlite3.connect(database = "ABC.db", check_same_thread=False)
-checkpointer = SqliteSaver(connect)
-config = {'configurable':{'thread_id':1}}
-workflow = graph.compile(checkpointer = checkpointer)
+# connect = sqlite3.connect(database = "ABC.db", check_same_thread=False)
+# checkpointer = SqliteSaver(connect)
+# config = {'configurable':{'thread_id':1}}
+workflow = graph.compile()
 
 
 @app.post('/Agent')
