@@ -1,0 +1,13 @@
+
+langgraph
+langchain-google-genai
+langchain-community
+langchain-mongodb
+langchain-core
+langchain
+langgraph-checkpoint-sqlite
+python-dotenv
+pymongo
+fastapi
+uvicorn[standard]
+requests
