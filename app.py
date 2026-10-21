@@ -9,15 +9,29 @@ from langchain_core.tools import tool
 import requests 
 import sqlite3
 from fastapi import FastAPI,Body
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from mthcemail import EmailSend
 from fastapi.middleware.cors import CORSMiddleware
+from langgraph.config import get_stream_writer
 import os
+import time
 load_dotenv()
-model = ChatGoogleGenerativeAI(model="gemini-3.1-flash-lite")
+model = ChatGoogleGenerativeAI(model="gemini-3.5-flash-lite")
 embedding = GoogleGenerativeAIEmbeddings(model = "gemini-embedding-001")
 app = FastAPI()
 API = os.getenv("API")
+API = os.getenv("API") 
+
+client = MongoClient(API)
+database = client['MTHC']
+vector_stores = {
+    dept: MongoDBAtlasVectorSearch(
+        embedding=embedding,
+        collection=database[dept],
+        index_name="vector_index",
+    )
+    for dept in ["eyecare", "dental", "speech", "mental", "pysio",'Hi']
+}
 
 app.add_middleware(
     CORSMiddleware,
@@ -31,7 +45,7 @@ app.add_middleware(
 
 class State(TypedDict):
     query:str
-    dept:Literal['eyecare','dental','speech','mental','pysio']
+    dept:Literal['eyecare','dental','speech','mental','pysio','Hi']
     res:str
     name:str
     contact:str
@@ -43,7 +57,7 @@ class State(TypedDict):
     appointment_fee:int
 
 class Dept(TypedDict):
-    dept:Literal['eyecare','dental','speech','mental','pysio']
+    dept:Literal['eyecare','dental','speech','mental','pysio','Hi']
 
 
 
@@ -236,49 +250,39 @@ def Analyze(State:State):
     }
 
 def Eyecare(State:State):
+    writer = get_stream_writer()
     query = State['query']
-    
-   
-    collection = State['dept']
-    client = MongoClient(API)
-    database = client['MTHC']
-    collection = database[collection]
-    db = MongoDBAtlasVectorSearch(
-        embedding = embedding,
-        collection = collection,
-        index_name = 'vector_index'
-    )
-    retriever = db.as_retriever(
-        search_kwargs = {
-            'k':10
-        }
-
-    )
+    retriever = vector_stores[State["dept"]].as_retriever(
+    search_kwargs={"k": 10}
+)
     retrieved = retriever.invoke(query)
 
-    prompt = f"This is the query{query} from user ans from our rag db{retrieved} only run otherwise not Eyecaretool when all credentials for booking are avaiable only"
+    prompt = f"This is the query{query} from user ans from our rag db{retrieved}  You are eye care Assistant just guide the individual regarding questions they ask ,  only run otherwise not Eyecaretool when all credentials for booking are avaiable only"
     smodel = model.bind_tools([EyecareTool])
-    result = smodel.invoke(prompt)
-    final = result.content[0]['text']
-    State['res']=final
+    answer = []
 
-    return {
-        'res':State['res']
-    }
+    for chunk in smodel.stream(prompt):
+        for block in chunk.content:
+            if block.get('type') == 'text' and block.get('text'):
+                text = block['text']
+                answer.append(text)
+                for word in text.split(' '):
+                    writer(word + ' ')
+                    time.sleep(0.03)
+
+    return {'answer': ''.join(answer)}
+    
+
+
+     
 
 
 def Dental(State:State):
+    writer = get_stream_writer()
     query = State['query']
-    collection = State['dept']
-    
-    client = MongoClient(API)
-    database = client['MTHC']
-    collection = database[collection]
-    db = MongoDBAtlasVectorSearch(
-        embedding = embedding,
-        collection = collection,
-        index_name = 'vector_index'
-    )
+    retriever = vector_stores[State["dept"]].as_retriever(
+    search_kwargs={"k": 10}
+)
     retriever = db.as_retriever(
         search_kwargs = {
             'k':10
@@ -289,110 +293,132 @@ def Dental(State:State):
 
     prompt = f"This is the query{query} from user ans  from our rag db ,only run otherwise not DentalTool when all credentials for booking are avaiable only"
     smodel = model.bind_tools([DentalTool])
-    result = smodel.invoke(prompt)
-    final = result.content[0]['text']
-    State['res']=final
+    answer = []
 
-    return {
-        'res':State['res']
-    }
+    for chunk in smodel.stream(prompt):
+        for block in chunk.content:
+            if block.get('type') == 'text' and block.get('text'):
+                text = block['text']
+                answer.append(text)
+                for word in text.split(' '):
+                    writer(word + ' ')
+                    time.sleep(0.03)
+
+    return {'answer': ''.join(answer)}
 
 def Speech(State:State):
+    writer = get_stream_writer()
     query = State['query']
-    collection = State['dept']
-    
-    client = MongoClient(API)
-    database = client['MTHC']
-    collection = database[collection]
-    db = MongoDBAtlasVectorSearch(
-        embedding = embedding,
-        collection = collection,
-        index_name = 'vector_index'
-    )
-    retriever = db.as_retriever(
-        search_kwargs = {
-            'k':10
-        }
-
-    )
+    retriever = vector_stores[State["dept"]].as_retriever(
+    search_kwargs={"k": 10}
+)
     retrieved = retriever.invoke(query)
 
     prompt = f"This is the query{query} from user ans from our rag db{retrieved} ,only run otherwise not SpeechTool when all credentials for booking are avaiable only"
     smodel = model.bind_tools([SpeechTool])
-    result = smodel.invoke(prompt)
-    final = result.content[0]['text']
-    State['res']=final
+ 
 
-    return {
-        'res':State['res']
-    }
+    answer = []
+
+    for chunk in smodel.stream(prompt):
+        for block in chunk.content:
+            if block.get('type') == 'text' and block.get('text'):
+                text = block['text']
+                answer.append(text)
+                for word in text.split(' '):
+                    writer(word + ' ')
+                    time.sleep(0.03)
+
+    return {'answer': ''.join(answer)}
 
 
 
 def Mental(State:State):
+    writer = get_stream_writer()
     query = State['query']
-    collection = State['dept']
-    
-    client = MongoClient(API)
-    database = client['MTHC']
-    collection = database[collection]
-    db = MongoDBAtlasVectorSearch(
-        embedding = embedding,
-        collection = collection,
-        index_name = 'vector_index'
-    )
-    retriever = db.as_retriever(
-        search_kwargs = {
-            'k':10
-        }
-
-    )
+    retriever = vector_stores[State["dept"]].as_retriever(
+    search_kwargs={"k": 10}
+)
+   
     retrieved = retriever.invoke(query)
 
     prompt = f"This is the query{query} from user ans from our rag db{retrieved} ,only run otherwise not MentalTool ntal when all credentials for booking are avaiable only"
     smodel = model.bind_tools([MentalTool])
-    result = smodel.invoke(prompt)
-    final = result.content[0]['text']
-    State['res']=final
+    answer = []
 
-    return {
-        'res':State['res']
-    }
+    for chunk in smodel.stream(prompt):
+        for block in chunk.content:
+            if block.get('type') == 'text' and block.get('text'):
+                text = block['text']
+                answer.append(text)
+                for word in text.split(' '):
+                    writer(word + ' ')
+                    time.sleep(0.03)
+
+    return {'answer': ''.join(answer)}
 
 def Physio(State:State):
+    writer = get_stream_writer()
     query = State['query']
-    collection = State['dept']
-    
-    client = MongoClient(API)
-    database = client['MTHC']
-    collection = database[collection]
-    db = MongoDBAtlasVectorSearch(
-        embedding = embedding,
-        collection = collection,
-        index_name = 'vector_index'
-    )
-    retriever = db.as_retriever(
-        search_kwargs = {
-            'k':10
-        }
-
-    )
+    retriever = vector_stores[State["dept"]].as_retriever(
+    search_kwargs={"k": 10}
+)
     retrieved = retriever.invoke(query)
 
     prompt = f"This is the query{query} from   user ans from our rag db{retrieved} ,only run otherwise not PhysioTool when all credentials for booking are avaiable only"
     smodel = model.bind_tools([PhysioTool])
-    result = smodel.invoke(prompt)
-    final = result.content[0]['text']
-    State['res']=final
+    answer = []
 
-    return {
-        'res':State['res']
-    }
+    for chunk in smodel.stream(prompt):
+        for block in chunk.content:
+            if block.get('type') == 'text' and block.get('text'):
+                text = block['text']
+                answer.append(text)
+                for word in text.split(' '):
+                    writer(word + ' ')
+                    time.sleep(0.03)
 
+    return {'answer': ''.join(answer)}
+
+
+def Hi(State:State):
+    writer = get_stream_writer()
+    query = State['query']
+    
+   
+
+    prompt = f"""This is the query{query} from  You are Melbourne Teaching and Health Clinics MTHC assistant greet user ask from user which dept he want Eyecare, Dental, Mental, pshyio ,speech pathiology salso ask he want to book appointment with some specialist   ,only run otherwise not PhysioTool when all
+     credentials for booking are avaiable only
+
+     - Always use green tick emoji for one time atleast in one message not too much
+- Use other emojis relates to data but ocasionally not which all
+- Always use green tick emoji for one time atleast in one message not too much
+- Do not use Markdown.
+- Do not use asterisks (*) for bold or bullet points.
+- Do not use headings with Markdown formatting.
+
+     
+     
+     
+     """
+    answer = []
+
+
+    for chunk in model.stream(prompt):
+        for block in chunk.content:
+            if block.get('type') == 'text' and block.get('text'):
+                text = block['text']
+                answer.append(text)
+                for word in text.split(' '):
+                    writer(word + ' ')
+                    time.sleep(0.03)
+
+    return {'answer': ''.join(answer)}
 
 def condition(State:State):
     dept = State['dept']
-    
+    if dept == "Hi":
+        return "hi"
     if dept == "eyecare":
         return "eyecare"
     if dept == "dental":
@@ -405,9 +431,11 @@ def condition(State:State):
         return "pysio"
     if dept == "":
         return "analyze"
+    
 
 
 graph = StateGraph(State)
+graph.add_node('hi', Hi)
 graph.add_node('analyze', Analyze)
 graph.add_node('eyecare', Eyecare)
 graph.add_node('dental', Dental)
@@ -418,6 +446,7 @@ graph.add_node('pysio', Physio)
 
 graph.add_edge(START, 'analyze')
 graph.add_conditional_edges('analyze', condition)
+graph.add_edge('hi',END)
 graph.add_edge('eyecare',END)
 graph.add_edge('dental',END)
 graph.add_edge('speech',END)
@@ -431,10 +460,28 @@ workflow = graph.compile()
 
 
 @app.post('/Agent')
-def Query(query:str = Body(...)):
-    initial_state={'query':query}
-    final = workflow.invoke(initial_state)
-    return JSONResponse(status_code = 200, content = final)
+def API(Query:str = Body(...)):
+    config = {'configurable':{'thread_id':1}}
+    initial_state ={'query':Query}
+    return StreamingResponse(
+        (
+            chunk
+            for chunk in workflow.stream(
+                initial_state,
+        
+                stream_mode='custom'
+            )
+
+            if isinstance(chunk, str)
+        ),
+        media_type='text/plain'
+    )
+   
+
+
+   
+
+
 
 
 
