@@ -277,18 +277,59 @@ def Eyecare(State:State):
      
 
 
-def Dental(State:State):
-    writer = get_stream_writer()
-    query = State['query']
-    retriever = vector_stores[State["dept"]].as_retriever(
-    search_kwargs={"k": 10}
-)
-    retriever = db.as_retriever(
-        search_kwargs = {
-            'k':10
-        }
 
+def Dental(State: State):
+    writer = get_stream_writer()
+    query = State["query"]
+
+    retriever = vector_stores["dental"].as_retriever(
+        search_kwargs={"k": 10}
     )
+
+    retrieved = retriever.invoke(query)
+
+    print("DENTAL QUERY:", query)
+    print("DENTAL DOCUMENTS:", len(retrieved))
+    print("DENTAL RESULTS:", retrieved)
+
+   
+
+    prompt = f"""
+You are the dental receptionist assistant for
+Melbourne Teaching and Health Clinics (MTHC).
+
+User question: {query}
+
+Information retrieved from the dental knowledge base:
+{retrieved}
+
+Instructions:
+- Answer questions about dental services using the retrieved information.
+- If the information is missing, say you do not have
+  that information and suggest contacting the clinic.
+- Only call DentalTool when the user intends to book
+  an appointment and all required booking information
+  is available.
+
+- Answer naturally and directly.
+"""
+
+    smodel = model.bind_tools([DentalTool])
+    answer = []
+
+    for chunk in smodel.stream(prompt):
+        for block in chunk.content:
+            if block.get("type") == "text" and block.get("text"):
+                text = block["text"]
+                answer.append(text)
+
+                for word in text.split(" "):
+                    writer(word + " ")
+                    time.sleep(0.03)
+
+    return {"answer": "".join(answer)}
+
+   
     retrieved = retriever.invoke(query)
 
     prompt = f"This is the query{query} from user ans  from our rag db ,only run otherwise not DentalTool when all credentials for booking are avaiable only"
