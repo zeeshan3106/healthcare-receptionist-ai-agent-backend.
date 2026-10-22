@@ -151,3 +151,4 @@ service-account.json
 # Local Python virtual environment
 rag/
 
+data
