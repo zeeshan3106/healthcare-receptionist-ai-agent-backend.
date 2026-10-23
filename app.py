@@ -133,13 +133,15 @@ def DentalTool(
         'appointment_fee':appointment_fee
         }
     API = "https://healthcare-receptionist-ai-agent-ba.vercel.app/api/form/form-post"
-    res = requests.post(API,payload)
+    res = requests.post(API,json=payload)
     final = res.json()
     #EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointment_fee)
     prompt = f"{final}Booking successfuly Done email also sent to individual on giving email give human greeting message for booking with MTHC Dental Dept"
     result = model.invoke(prompt)
     final = result.content[0]['text']
-    State['res']=final
+    
+
+    return final
 
 
 @tool
@@ -168,14 +170,14 @@ def SpeechTool(
         'appointment_fee':appointment_fee
         }
     API = "https://healthcare-receptionist-ai-agent-ba.vercel.app/api/form/form-post"
-    res = requests.post(API,payload)
+    res = requests.post(API,json=payload)
     final = res.json()
     #EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointment_fee)
     # prompt = f"{final}Booking successfuly Done email also sent to individual on giving email give human greeting message for booking with MTHC Speech Dept"
     # result = model.invoke(prompt)
     # final = result.content[0]['text']
     # State['res']=final
-    print(final)
+    return final
   
     
 @tool
@@ -204,13 +206,13 @@ def MentalTool(
         'appointment_fee':appointment_fee
         }
     API = "https://healthcare-receptionist-ai-agent-ba.vercel.app/api/form/form-post"
-    res = requests.post(API,payload)
+    res = requests.post(API,json=payload)
     final = res.json()
     #EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointment_fee)
     prompt = f"{final}Booking successfuly Done email also sent to individual on giving email give human greeting message for booking with MTHC Mental Health Dept"
     result = model.invoke(prompt)
     final = result.content[0]['text']
-    State['res']=final
+    return final
 
 @tool
 def PhysioTool(
@@ -238,14 +240,14 @@ def PhysioTool(
         'appointment_fee':appointment_fee
         }
     API = "https://healthcare-receptionist-ai-agent-ba.vercel.app/api/form/form-post"
-    res = requests.post(API,payload)
+    res = requests.post(API,json=payload)
     final = res.json()
     #EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointment_fee)
     prompt = f"{final}Booking successfuly Done email also sent to individual on giving email give human greeting message for booking with MTHC Physio Dept"
     result = model.invoke(prompt)
     final = result.content[0]['text']
     
-    State['res']=final
+    return final
 
 
 
@@ -387,6 +389,7 @@ Respond only with the message intended for the user.
     answer = []
     tool_calls = []
     for chunk in smodel.stream(prompt):
+        
         if chunk.tool_call_chunks:
             tool_calls.extend(chunk.tool_call_chunks)
         for block in chunk.content:
@@ -431,6 +434,7 @@ Respond only with the message intended for the user.
 
 
 def Dental(State: State):
+
     writer = get_stream_writer()
     query = State["query"]
     history = list(collection.find({}, {"_id":0}))
@@ -548,8 +552,10 @@ Respond only with the message intended for the user.
 
     smodel = model.bind_tools([DentalTool])
     answer = []
-
+    tool_calls = []
     for chunk in smodel.stream(prompt):
+        if chunk.tool_call_chunks:
+            tool_calls.extend(chunk.tool_call_chunks)
         for block in chunk.content:
             if block.get("type") == "text" and block.get("text"):
                 text = block["text"]
@@ -558,10 +564,16 @@ Respond only with the message intended for the user.
                 for word in text.split(" "):
                     writer(word + " ")
                     time.sleep(0.03)
-    # final_answer = ''.join(answer)
+    final_answer = ''.join(answer)
     # with open('history.txt', 'a', encoding='utf-8') as f:
    
     #     f.write(query + '\n' + final_answer + '\n')
+    if tool_calls:
+        args = json.loads(tool_calls[0]["args"])
+        result = DentalTool.invoke(args)
+        print(result)
+        writer(result)
+        answer.append(result)
     collection.insert_one({
     "human": query,
     "AI":final_answer
@@ -687,8 +699,10 @@ Respond only with the message intended for the user.
  
 
     answer = []
-
+    tool_calls = []
     for chunk in smodel.stream(prompt):
+        if chunk.tool_call_chunks:
+            tool_calls.extend(chunk.tool_call_chunks)
         for block in chunk.content:
             if block.get('type') == 'text' and block.get('text'):
                 text = block['text']
@@ -697,6 +711,12 @@ Respond only with the message intended for the user.
                     writer(word + ' ')
                     time.sleep(0.03)
     final_answer = ''.join(answer)
+    if tool_calls:
+        args = json.loads(tool_calls[0]["args"])
+        result = SpeechTool.invoke(args)
+        print(result)
+        writer(result)
+        answer.append(result)
     collection.insert_one({
     "human": query,
     "AI":final_answer
@@ -833,8 +853,10 @@ Respond only with the message intended for the user.
 
     smodel = model.bind_tools([MentalTool])
     answer = []
-
+    tool_calls = []
     for chunk in smodel.stream(prompt):
+        if chunk.tool_call_chunks:
+            tool_calls.extend(chunk.tool_call_chunks)
         for block in chunk.content:
             if block.get('type') == 'text' and block.get('text'):
                 text = block['text']
@@ -843,6 +865,12 @@ Respond only with the message intended for the user.
                     writer(word + ' ')
                     time.sleep(0.03)
     final_answer = ''.join(answer)
+    if tool_calls:
+        args = json.loads(tool_calls[0]["args"])
+        result = EyecareTool.invoke(args)
+        print(result)
+        writer(result)
+        answer.append(result)
     # with open('history.txt', 'a', encoding='utf-8') as f:
    
     #     f.write(query + '\n' + final_answer + '\n')
@@ -965,8 +993,10 @@ Respond only with the message intended for the user.
 
     smodel = model.bind_tools([PhysioTool])
     answer = []
-
+    tool_calls = []
     for chunk in smodel.stream(prompt):
+        if chunk.tool_call_chunks:
+            tool_calls.extend(chunk.tool_call_chunks)
         for block in chunk.content:
             if block.get('type') == 'text' and block.get('text'):
                 text = block['text']
@@ -975,6 +1005,12 @@ Respond only with the message intended for the user.
                     writer(word + ' ')
                     time.sleep(0.03)
     final_answer = ''.join(answer)
+    if tool_calls:
+        args = json.loads(tool_calls[0]["args"])
+        result = EyecareTool.invoke(args)
+        print(result)
+        writer(result)
+        answer.append(result)
     # with open('history.txt', 'a', encoding='utf-8') as f:
    
     #     f.write(query + '\n' + final_answer + '\n')
