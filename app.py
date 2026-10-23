@@ -255,7 +255,7 @@ def Eyecare(State:State):
     writer = get_stream_writer()
     query = State['query']
     retriever = vector_stores[State["dept"]].as_retriever(
-    search_kwargs={"k": 10}
+    search_kwargs={"k": 3}
 )
     retrieved = retriever.invoke(query)
 
@@ -358,7 +358,7 @@ def Dental(State: State):
     query = State["query"]
 
     retriever = vector_stores["dental"].as_retriever(
-        search_kwargs={"k": 10}
+        search_kwargs={"k": 3}
     )
 
     retrieved = retriever.invoke(query)
@@ -460,29 +460,12 @@ Respond only with the message intended for the user.
 
     return {"answer": "".join(answer)}
 
-   
-    retrieved = retriever.invoke(query)
-
-    prompt = f"This is the query{query} from user ans  from our rag db ,only run otherwise not DentalTool when all credentials for booking are avaiable only"
-    smodel = model.bind_tools([DentalTool])
-    answer = []
-
-    for chunk in smodel.stream(prompt):
-        for block in chunk.content:
-            if block.get('type') == 'text' and block.get('text'):
-                text = block['text']
-                answer.append(text)
-                for word in text.split(' '):
-                    writer(word + ' ')
-                    time.sleep(0.03)
-
-    return {'answer': ''.join(answer)}
 
 def Speech(State:State):
     writer = get_stream_writer()
     query = State['query']
     retriever = vector_stores[State["dept"]].as_retriever(
-    search_kwargs={"k": 10}
+    search_kwargs={"k": 3}
 )
     retrieved = retriever.invoke(query)
     prompt = f"""
@@ -585,7 +568,7 @@ def Mental(State:State):
     writer = get_stream_writer()
     query = State['query']
     retriever = vector_stores[State["dept"]].as_retriever(
-    search_kwargs={"k": 10}
+    search_kwargs={"k": 3}
 )
    
     retrieved = retriever.invoke(query)
@@ -697,7 +680,7 @@ def Physio(State:State):
     writer = get_stream_writer()
     query = State['query']
     retriever = vector_stores[State["dept"]].as_retriever(
-    search_kwargs={"k": 10}
+    search_kwargs={"k": 3}
 )
     retrieved = retriever.invoke(query)
     prompt = f"""
