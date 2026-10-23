@@ -246,7 +246,8 @@ def PhysioTool(
 
 def Analyze(State:State):
     query = State['query']
-    prompt = f"this is the {query} from user categorise it like from which department user is talking about if not provided simply ask that "
+    prompt = f"""this is the {query} from user categorise History of Conversations always try to connect the current user query with the last questions and answers the last also watch all but put extreme focus on last history messages to connect it and then see all
+{history}it like from which department user is talking about if not provided simply ask that """
     smodel = model.with_structured_output(Dept)
     result = smodel.invoke(prompt)
     State['dept']=result['dept']
