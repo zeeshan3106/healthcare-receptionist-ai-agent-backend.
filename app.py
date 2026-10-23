@@ -33,6 +33,10 @@ vector_stores = {
     for dept in ["eyecare", "dental", "speech", "mental", "pysio",'Hi']
 }
 
+collection = database['History']
+
+
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -41,10 +45,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-with open('history.txt','r') as f:
-    history = f.read()
-
-print(len(history))
 
 
 
@@ -259,6 +259,9 @@ def Analyze(State:State):
 def Eyecare(State:State):
     writer = get_stream_writer()
     query = State['query']
+
+    history = list(collection.find({}, {"_id":0}))
+
     retriever = vector_stores['dental'].as_retriever(
     search_kwargs={"k": 3,
                      "pre_filter": {
@@ -370,9 +373,18 @@ Respond only with the message intended for the user.
                     writer(word + ' ')
                     time.sleep(0.03)
     final_answer = ''.join(answer)
-    with open('history.txt', 'a', encoding='utf-8') as f:
+    # with open('history.txt', 'a', encoding='utf-8') as f:
    
-        f.write(query + '\n' + final_answer + '\n')
+    #     f.write(query + '\n' + final_answer + '\n')
+
+    collection.insert_one({
+    "human": query,
+    "AI":final_answer
+    
+})
+
+
+
 
     return {'answer': ''.join(answer)}
     
@@ -385,7 +397,7 @@ Respond only with the message intended for the user.
 def Dental(State: State):
     writer = get_stream_writer()
     query = State["query"]
-
+    history = list(collection.find({}, {"_id":0}))
     retriever = vector_stores['dental'].as_retriever(
     search_kwargs={"k": 3,
                      "pre_filter": {
@@ -503,10 +515,17 @@ Respond only with the message intended for the user.
                 for word in text.split(" "):
                     writer(word + " ")
                     time.sleep(0.03)
-    final_answer = ''.join(answer)
-    with open('history.txt', 'a', encoding='utf-8') as f:
+    # final_answer = ''.join(answer)
+    # with open('history.txt', 'a', encoding='utf-8') as f:
    
-        f.write(query + '\n' + final_answer + '\n')
+    #     f.write(query + '\n' + final_answer + '\n')
+    collection.insert_one({
+    "human": query,
+    "AI":final_answer
+    
+})
+
+    
 
     return {"answer": "".join(answer)}
 
@@ -514,6 +533,7 @@ Respond only with the message intended for the user.
 def Speech(State:State):
     writer = get_stream_writer()
     query = State['query']
+    history = list(collection.find({}, {"_id":0}))
     retriever = vector_stores['dental'].as_retriever(
     search_kwargs={"k": 3,
                      "pre_filter": {
@@ -627,11 +647,13 @@ Respond only with the message intended for the user.
                     writer(word + ' ')
                     time.sleep(0.03)
     final_answer = ''.join(answer)
-    with open('history.txt', 'a', encoding='utf-8') as f:
-   
-        f.write(query + '\n' + final_answer + '\n')
+    collection.insert_one({
+    "human": query,
+    "AI":final_answer
+    
+})
         
-    print(len(history))
+    
     return {'answer': ''.join(answer)}
 
 
@@ -639,6 +661,7 @@ Respond only with the message intended for the user.
 def Mental(State:State):
     writer = get_stream_writer()
     query = State['query']
+    history = list(collection.find({}, {"_id":0}))
     retriever = vector_stores['dental'].as_retriever(
     search_kwargs={"k": 3,
                      "pre_filter": {
@@ -763,14 +786,20 @@ Respond only with the message intended for the user.
                     writer(word + ' ')
                     time.sleep(0.03)
     final_answer = ''.join(answer)
-    with open('history.txt', 'a', encoding='utf-8') as f:
+    # with open('history.txt', 'a', encoding='utf-8') as f:
    
-        f.write(query + '\n' + final_answer + '\n')
+    #     f.write(query + '\n' + final_answer + '\n')
+    # 
+    collection.insert_one({
+    "human": query,
+    "AI":final_answer
+    
+})
     return {'answer': ''.join(answer)}
-
 def Physio(State:State):
     writer = get_stream_writer()
     query = State['query']
+    history = list(collection.find({}, {"_id":0}))
     retriever = vector_stores['dental'].as_retriever(
     search_kwargs={"k": 3,
                      "pre_filter": {
@@ -882,19 +911,26 @@ Respond only with the message intended for the user.
                     writer(word + ' ')
                     time.sleep(0.03)
     final_answer = ''.join(answer)
-    with open('history.txt', 'a', encoding='utf-8') as f:
+    # with open('history.txt', 'a', encoding='utf-8') as f:
    
-        f.write(query + '\n' + final_answer + '\n')
+    #     f.write(query + '\n' + final_answer + '\n')
+
+    collection.insert_one({
+    "human": query,
+    "AI":final_answer
+    
+})
     return {'answer': ''.join(answer)}
 
 
 def Hi(State:State):
     writer = get_stream_writer()
     query = State['query']
+    history = list(collection.find({}, {"_id":0}))
     
    
 
-    prompt = f"""This is the query{query} from  You are Melbourne Teaching and Health Clinics MTHC assistant greet user ask from user which dept he want Eyecare, Dental, Mental, pshyio ,speech pathiology salso ask he want to book appointment with some specialist   ,only run otherwise not PhysioTool when all
+    prompt = f"""This is the query{query} from {history} You are Melbourne Teaching and Health Clinics MTHC assistant greet user ask from user which dept he want Eyecare, Dental, Mental, pshyio ,speech pathiology salso ask he want to book appointment with some specialist   ,only run otherwise not PhysioTool when all
      credentials for booking are avaiable only
 
      - Always use green tick emoji for one time atleast in one message not too much
@@ -920,9 +956,11 @@ def Hi(State:State):
                     writer(word + ' ')
                     time.sleep(0.03)
     final_answer = ''.join(answer)
-    with open('history.txt', 'a', encoding='utf-8') as f:
-   
-        f.write(query + '\n' + final_answer + '\n')
+    collection.insert_one({
+    "human": query,
+    "AI":final_answer
+    
+})
     return {'answer': ''.join(answer)}
 
 def condition(State:State):
@@ -973,16 +1011,12 @@ workflow = graph.compile()
 def API(Query:str = Body(...)):
     config = {'configurable':{'thread_id':1}}
     
-    with open('history.txt','r') as f:
-        history = f.read()
-        print(len(history))
-    history = len(history)
+    if collection.count_documents({}) > 5000:
+        first_5 = collection.find().sort("_id", 1).limit(5)
 
-    if history > 5000:
-        history = history[-5000:]
-    
-        with open('history.txt','w',  encoding='utf-8') as f:
-            f.write(' '.join(history))
+        ids = [doc["_id"] for doc in first_5]
+
+        collection.delete_many({"_id": {"$in": ids}})
 
     
 
