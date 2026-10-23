@@ -336,6 +336,18 @@ Instructions:
 13. Never claim an appointment is booked, confirmed, or
     available unless the booking tool explicitly confirms it.
 
+    For every website link, use exactly this format:
+[Website Name](https://example.com/path)
+
+Create only one Markdown link per website.
+Never nest links or repeat the URL inside the link.
+Do not escape parentheses or add spaces inside URLs.
+    Use valid Markdown bold syntax: **text**.
+Never escape asterisks with backslashes.
+Do not put spaces immediately inside the bold markers.
+
+
+
 Respond only with the message intended for the user.
 """   
     smodel = model.bind_tools([EyecareTool])
@@ -451,6 +463,15 @@ Instructions:
 
 13. Never claim an appointment is booked, confirmed, or
     available unless the booking tool explicitly confirms it.
+    For every website link, use exactly this format:
+[Website Name](https://example.com/path)
+
+Create only one Markdown link per website.
+Never nest links or repeat the URL inside the link.
+Do not escape parentheses or add spaces inside URLs.
+    Use valid Markdown bold syntax: **text**.
+Never escape asterisks with backslashes.
+Do not put spaces immediately inside the bold markers.
 
 Respond only with the message intended for the user.
 """
@@ -557,6 +578,15 @@ Instructions:
 
 13. Never claim an appointment is booked, confirmed, or
     available unless the booking tool explicitly confirms it.
+    For every website link, use exactly this format:
+[Website Name](https://example.com/path)
+
+Create only one Markdown link per website.
+Never nest links or repeat the URL inside the link.
+Do not escape parentheses or add spaces inside URLs.
+    Use valid Markdown bold syntax: **text**.
+Never escape asterisks with backslashes.
+Do not put spaces immediately inside the bold markers.
 
 Respond only with the message intended for the user.
 """
@@ -678,6 +708,15 @@ Instructions:
     immediate safety and encourage them to contact emergency
     services or an appropriate crisis support service rather
     than treating the conversation as a routine booking.
+    For every website link, use exactly this format:
+[Website Name](https://example.com/path)
+
+Create only one Markdown link per website.
+Never nest links or repeat the URL inside the link.
+Do not escape parentheses or add spaces inside URLs.
+    Use valid Markdown bold syntax: **text**.
+Never escape asterisks with backslashes.
+Do not put spaces immediately inside the bold markers.
 
 Respond only with the message intended for the user.
 """
@@ -782,6 +821,15 @@ Instructions:
 
 13. Never claim an appointment is booked, confirmed, or
     available unless the booking tool explicitly confirms it.
+    For every website link, use exactly this format:
+[Website Name](https://example.com/path)
+
+Create only one Markdown link per website.
+Never nest links or repeat the URL inside the link.
+Do not escape parentheses or add spaces inside URLs.
+    Use valid Markdown bold syntax: **text**.
+Never escape asterisks with backslashes.
+Do not put spaces immediately inside the bold markers.
 
 Respond only with the message intended for the user.
 """
