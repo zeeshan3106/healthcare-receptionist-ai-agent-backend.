@@ -360,8 +360,22 @@ Never escape asterisks with backslashes.
 Do not put spaces immediately inside the bold markers.
 
 
-
-Respond only with the message intended for the user.
+Conversation rules:
+- Do not greet the user in every response.
+- Answer the latest question directly before asking anything else.
+- Use previous messages to understand context, not to copy old responses.
+- Do not repeat explanations or booking requests unnecessarily.
+- Ask only for booking information that is still missing.
+- Do not assume the user wants to book just because they ask about a doctor.
+- Recommend a clinician only when supported by verified clinic information.     Conversation rules:
+- Do not greet the user in every response.
+- Answer the latest question directly before asking anything else.
+- Use previous messages to understand context, not to copy old responses.
+- Do not repeat explanations or booking requests unnecessarily.
+- Ask only for booking information that is still missing.
+- Do not assume the user wants to book just because they ask about a doctor.
+- Recommend a clinician only when supported by verified clinic information.     
+Respond only with the message intended for the user.        
 """   
     smodel = model.bind_tools([EyecareTool])
     answer = []
@@ -501,8 +515,15 @@ Do not escape parentheses or add spaces inside URLs.
     Use valid Markdown bold syntax: **text**.
 Never escape asterisks with backslashes.
 Do not put spaces immediately inside the bold markers.
-
-Respond only with the message intended for the user.
+Conversation rules:
+- Do not greet the user in every response.
+- Answer the latest question directly before asking anything else.
+- Use previous messages to understand context, not to copy old responses.
+- Do not repeat explanations or booking requests unnecessarily.
+- Ask only for booking information that is still missing.
+- Do not assume the user wants to book just because they ask about a doctor.
+- Recommend a clinician only when supported by verified clinic information.     
+Respond only with the message intended for the user.    
 """
 
     smodel = model.bind_tools([DentalTool])
@@ -631,8 +652,15 @@ Do not escape parentheses or add spaces inside URLs.
     Use valid Markdown bold syntax: **text**.
 Never escape asterisks with backslashes.
 Do not put spaces immediately inside the bold markers.
-
-Respond only with the message intended for the user.
+Conversation rules:
+- Do not greet the user in every response.
+- Answer the latest question directly before asking anything else.
+- Use previous messages to understand context, not to copy old responses.
+- Do not repeat explanations or booking requests unnecessarily.
+- Ask only for booking information that is still missing.
+- Do not assume the user wants to book just because they ask about a doctor.
+- Recommend a clinician only when supported by verified clinic information.     
+Respond only with the message intended for the user.    
 """
 
     smodel = model.bind_tools([SpeechTool])
@@ -772,8 +800,15 @@ Do not escape parentheses or add spaces inside URLs.
     Use valid Markdown bold syntax: **text**.
 Never escape asterisks with backslashes.
 Do not put spaces immediately inside the bold markers.
-
-Respond only with the message intended for the user.
+Conversation rules:
+- Do not greet the user in every response.
+- Answer the latest question directly before asking anything else.
+- Use previous messages to understand context, not to copy old responses.
+- Do not repeat explanations or booking requests unnecessarily.
+- Ask only for booking information that is still missing.
+- Do not assume the user wants to book just because they ask about a doctor.
+- Recommend a clinician only when supported by verified clinic information.     
+Respond only with the message intended for the user.    
 """
 
     smodel = model.bind_tools([MentalTool])
@@ -897,8 +932,15 @@ Do not escape parentheses or add spaces inside URLs.
     Use valid Markdown bold syntax: **text**.
 Never escape asterisks with backslashes.
 Do not put spaces immediately inside the bold markers.
-
-Respond only with the message intended for the user.
+Conversation rules:
+- Do not greet the user in every response.
+- Answer the latest question directly before asking anything else.
+- Use previous messages to understand context, not to copy old responses.
+- Do not repeat explanations or booking requests unnecessarily.
+- Ask only for booking information that is still missing.
+- Do not assume the user wants to book just because they ask about a doctor.
+- Recommend a clinician only when supported by verified clinic information.     
+Respond only with the message intended for the user.    
 """
 
     smodel = model.bind_tools([PhysioTool])
