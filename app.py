@@ -254,8 +254,13 @@ def Analyze(State:State):
 def Eyecare(State:State):
     writer = get_stream_writer()
     query = State['query']
-    retriever = vector_stores[State["dept"]].as_retriever(
-    search_kwargs={"k": 3}
+    retriever = vector_stores['dental'].as_retriever(
+    search_kwargs={"k": 3,
+                     "pre_filter": {
+            "dept": {"$eq": "eyecare"}
+        }
+                  
+                  }
 )
     retrieved = retriever.invoke(query)
 
