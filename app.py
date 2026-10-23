@@ -120,7 +120,7 @@ def DentalTool(
     appointment_fee:int,
     State:State):
     """
-    Tool
+    Tools
     """
     payload = {
         'name':name,
