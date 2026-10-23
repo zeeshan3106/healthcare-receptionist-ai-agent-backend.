@@ -7,6 +7,8 @@ from pymongo import MongoClient
 from langchain_mongodb import MongoDBAtlasVectorSearch
 from langchain_core.tools import tool
 import requests 
+import json
+from langchain_core.messages import AIMessageChunk
 import sqlite3
 from fastapi import FastAPI,Body
 from fastapi.responses import JSONResponse, StreamingResponse
@@ -76,11 +78,11 @@ def EyecareTool(
     specialist:str,
     desc:str,
     appointment_fee:int,
-    time:str,
-    State:State):
+    time:str):
     """
     Tool
     """
+    print(name, contact)
     payload = {
         'name':name,
         'contact':contact,
@@ -93,13 +95,16 @@ def EyecareTool(
         'time':time
         }
     API = "https://healthcare-receptionist-ai-agent-ba.vercel.app/api/form/form-post"
-    res = requests.post(API,payload)
+    res = requests.post(API, json=payload)
     final = res.json()
+    print(final)
     #EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointment_fee)
     prompt = f"{final}Booking successfuly Done email also sent to individual on giving email give human greeting message for booking with EyeCare Dept"
     result = model.invoke(prompt)
     final = result.content[0]['text']
-    State['res']=final
+    
+
+    return final
 
 
 @tool
@@ -166,10 +171,11 @@ def SpeechTool(
     res = requests.post(API,payload)
     final = res.json()
     #EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointment_fee)
-    prompt = f"{final}Booking successfuly Done email also sent to individual on giving email give human greeting message for booking with MTHC Speech Dept"
-    result = model.invoke(prompt)
-    final = result.content[0]['text']
-    State['res']=final
+    # prompt = f"{final}Booking successfuly Done email also sent to individual on giving email give human greeting message for booking with MTHC Speech Dept"
+    # result = model.invoke(prompt)
+    # final = result.content[0]['text']
+    # State['res']=final
+    print(final)
   
     
 @tool
@@ -379,8 +385,10 @@ Respond only with the message intended for the user.
 """   
     smodel = model.bind_tools([EyecareTool])
     answer = []
-
+    tool_calls = []
     for chunk in smodel.stream(prompt):
+        if chunk.tool_call_chunks:
+            tool_calls.extend(chunk.tool_call_chunks)
         for block in chunk.content:
             if block.get('type') == 'text' and block.get('text'):
                 text = block['text']
@@ -388,7 +396,19 @@ Respond only with the message intended for the user.
                 for word in text.split(' '):
                     writer(word + ' ')
                     time.sleep(0.03)
+            
     final_answer = ''.join(answer)
+    
+    
+    print("TOOL CALLS:", tool_calls)
+
+    if tool_calls:
+        args = json.loads(tool_calls[0]["args"])
+        result = EyecareTool.invoke(args)
+        print(result)
+        writer(result)
+        answer.append(result)
+
     # with open('history.txt', 'a', encoding='utf-8') as f:
    
     #     f.write(query + '\n' + final_answer + '\n')
