@@ -315,7 +315,7 @@ Instructions:
    specialist: str
    desc: str
    appointment_fee: int
-   time: str
+   time: str Must otherwise dont run tool !!!!!
 
 4. Before calling EyeCareTool, ensure every required field
    contains a valid, usable value.
