@@ -362,9 +362,14 @@ def Dental(State: State):
     writer = get_stream_writer()
     query = State["query"]
 
-    retriever = vector_stores["dental"].as_retriever(
-        search_kwargs={"k": 3}
-    )
+    retriever = vector_stores['dental'].as_retriever(
+    search_kwargs={"k": 3,
+                     "pre_filter": {
+            "dept": {"$eq": "dental"}
+        }
+                  
+                  }
+)
 
     retrieved = retriever.invoke(query)
 
@@ -469,8 +474,13 @@ Respond only with the message intended for the user.
 def Speech(State:State):
     writer = get_stream_writer()
     query = State['query']
-    retriever = vector_stores[State["dept"]].as_retriever(
-    search_kwargs={"k": 3}
+    retriever = vector_stores['dental'].as_retriever(
+    search_kwargs={"k": 3,
+                     "pre_filter": {
+            "dept": {"$eq": "speech"}
+        }
+                  
+                  }
 )
     retrieved = retriever.invoke(query)
     prompt = f"""
@@ -572,8 +582,13 @@ Respond only with the message intended for the user.
 def Mental(State:State):
     writer = get_stream_writer()
     query = State['query']
-    retriever = vector_stores[State["dept"]].as_retriever(
-    search_kwargs={"k": 3}
+    retriever = vector_stores['dental'].as_retriever(
+    search_kwargs={"k": 3,
+                     "pre_filter": {
+            "dept": {"$eq": "mental"}
+        }
+                  
+                  }
 )
    
     retrieved = retriever.invoke(query)
@@ -684,8 +699,13 @@ Respond only with the message intended for the user.
 def Physio(State:State):
     writer = get_stream_writer()
     query = State['query']
-    retriever = vector_stores[State["dept"]].as_retriever(
-    search_kwargs={"k": 3}
+    retriever = vector_stores['dental'].as_retriever(
+    search_kwargs={"k": 3,
+                     "pre_filter": {
+            "dept": {"$eq": "physio"}
+        }
+                  
+                  }
 )
     retrieved = retriever.invoke(query)
     prompt = f"""
