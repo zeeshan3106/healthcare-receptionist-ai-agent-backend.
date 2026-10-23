@@ -98,7 +98,7 @@ def EyecareTool(
     res = requests.post(API, json=payload)
     final = res.json()
     print(final)
-    #EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointment_fee)
+    EmailSend(email, name,time,contact,dept, specialist, desc, appointment_fee)
     prompt = f"{final}Booking successfuly Done email also sent to individual on giving email give human greeting message for booking with EyeCare Dept"
     result = model.invoke(prompt)
     final = result.content[0]['text']
@@ -135,7 +135,7 @@ def DentalTool(
     API = "https://healthcare-receptionist-ai-agent-ba.vercel.app/api/form/form-post"
     res = requests.post(API,json=payload)
     final = res.json()
-    #EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointment_fee)
+    EmailSend(email, name,time,contact,dept, specialist, desc, appointment_fee)
     prompt = f"{final}Booking successfuly Done email also sent to individual on giving email give human greeting message for booking with MTHC Dental Dept"
     result = model.invoke(prompt)
     final = result.content[0]['text']
@@ -172,11 +172,11 @@ def SpeechTool(
     API = "https://healthcare-receptionist-ai-agent-ba.vercel.app/api/form/form-post"
     res = requests.post(API,json=payload)
     final = res.json()
-    #EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointment_fee)
-    # prompt = f"{final}Booking successfuly Done email also sent to individual on giving email give human greeting message for booking with MTHC Speech Dept"
-    # result = model.invoke(prompt)
-    # final = result.content[0]['text']
-    # State['res']=final
+    EmailSend(email, name,time,contact,dept, specialist, desc, appointment_fee)
+    prompt = f"{final}Booking successfuly Done email also sent to individual on giving email give human greeting message for booking with MTHC Speech Dept"
+    result = model.invoke(prompt)
+    final = result.content[0]['text']
+    State['res']=final
     return final
   
     
@@ -208,7 +208,7 @@ def MentalTool(
     API = "https://healthcare-receptionist-ai-agent-ba.vercel.app/api/form/form-post"
     res = requests.post(API,json=payload)
     final = res.json()
-    #EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointment_fee)
+    EmailSend(email, name,time,contact,dept, specialist, desc, appointment_fee)
     prompt = f"{final}Booking successfuly Done email also sent to individual on giving email give human greeting message for booking with MTHC Mental Health Dept"
     result = model.invoke(prompt)
     final = result.content[0]['text']
@@ -242,7 +242,7 @@ def PhysioTool(
     API = "https://healthcare-receptionist-ai-agent-ba.vercel.app/api/form/form-post"
     res = requests.post(API,json=payload)
     final = res.json()
-    #EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointment_fee)
+    EmailSend(email, name,time,contact,dept, specialist, desc, appointment_fee)
     prompt = f"{final}Booking successfuly Done email also sent to individual on giving email give human greeting message for booking with MTHC Physio Dept"
     result = model.invoke(prompt)
     final = result.content[0]['text']

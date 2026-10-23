@@ -1,5 +1,5 @@
 import smtplib
-import time
+import time as tm
 from email.message import EmailMessage
 from dotenv import load_dotenv
 import os
@@ -18,7 +18,7 @@ APP_Password = os.getenv("APP_Password")
 # ]
 
 
-def EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointment_fee):
+def EmailSend(email, name,time,contact,dept, specialist, desc, appointment_fee):
     html = f"""
 <!DOCTYPE html>
 <html>
@@ -90,7 +90,7 @@ def EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointmen
                         Service
                     </td>
                     <td style="padding:12px 0; text-align:right; font-weight:600;">
-                        {servce}
+              
                     </td>
                 </tr>
                
@@ -146,7 +146,7 @@ def EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointmen
 """
     with smtplib.SMTP_SSL('smtp.gmail.com',465) as smtp:
         smtp.login(Email,APP_Password)
-        a = time.time()
+        a = tm.time()
         msg = EmailMessage()
         msg["From"] = f"Zeeshan Ali Zafar <{Email}>"
         msg["To"] = email
@@ -168,7 +168,7 @@ def EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointmen
         smtp.send_message(msg)
         
        
-        b = time.time()
+        b = tm.time()
         c = b-a
         minutes = int(c // 60)
         seconds = c % 60
