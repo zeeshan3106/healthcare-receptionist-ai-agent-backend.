@@ -92,7 +92,7 @@ def EyecareTool(
         'appointment_fee':appointment_fee,
         'time':time
         }
-    API = ""
+    API = "https://healthcare-receptionist-ai-agent-ba.vercel.app/api/form/form-post"
     res = requests.post(API,payload)
     final = res.json()
     #EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointment_fee)
@@ -127,7 +127,7 @@ def DentalTool(
         'desc':desc,
         'appointment_fee':appointment_fee
         }
-    API = ""
+    API = "https://healthcare-receptionist-ai-agent-ba.vercel.app/api/form/form-post"
     res = requests.post(API,payload)
     final = res.json()
     #EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointment_fee)
@@ -162,7 +162,7 @@ def SpeechTool(
         'desc':desc,
         'appointment_fee':appointment_fee
         }
-    API = ""
+    API = "https://healthcare-receptionist-ai-agent-ba.vercel.app/api/form/form-post"
     res = requests.post(API,payload)
     final = res.json()
     #EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointment_fee)
@@ -197,7 +197,7 @@ def MentalTool(
         'desc':desc,
         'appointment_fee':appointment_fee
         }
-    API = ""
+    API = "https://healthcare-receptionist-ai-agent-ba.vercel.app/api/form/form-post"
     res = requests.post(API,payload)
     final = res.json()
     #EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointment_fee)
@@ -231,7 +231,7 @@ def PhysioTool(
         'desc':desc,
         'appointment_fee':appointment_fee
         }
-    API = ""
+    API = "https://healthcare-receptionist-ai-agent-ba.vercel.app/api/form/form-post"
     res = requests.post(API,payload)
     final = res.json()
     #EmailSend(email, name,time,contact,dept,servce, specialist, desc, appointment_fee)
@@ -246,6 +246,7 @@ def PhysioTool(
 
 def Analyze(State:State):
     query = State['query']
+    history = list(collection.find({}, {"_id":0}))
     prompt = f"""this is the {query} from user categorise History of Conversations always try to connect the current user query with the last questions and answers the last also watch all but put extreme focus on last history messages to connect it and then see all
 {history}it like from which department user is talking about if not provided simply ask that """
     smodel = model.with_structured_output(Dept)
