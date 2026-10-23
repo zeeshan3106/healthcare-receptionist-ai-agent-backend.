@@ -281,7 +281,7 @@ User question: {query}
 Information retrieved from the eye care knowledge base:
 {retrieved}
 
-History of Conversations
+History of Conversations always try to connect the current user query with the last questions and answers the last also watch all but put extreme focus on last history messages to connect it and then see all
 {history}
 
 Instructions:
@@ -423,7 +423,7 @@ User question: {query}
 Information retrieved from the dental knowledge base:
 {retrieved}
 
-History of Conversations
+History of Conversations always try to connect the current user query with the last questions and answers the last also watch all but put extreme focus on last history messages to connect it and then see all
 {history}
 
 Instructions:
@@ -552,7 +552,7 @@ User question: {query}
 Information retrieved from the speech pathology knowledge base:
 {retrieved}
 
-History of Conversations
+History of Conversations always try to connect the current user query with the last questions and answers the last also watch all but put extreme focus on last history messages to connect it and then see all
 {history}
 
 Instructions:
@@ -681,7 +681,7 @@ User question: {query}
 Information retrieved from the mental health knowledge base:
 {retrieved}
 
-History of Conversations
+History of Conversations always try to connect the current user query with the last questions and answers the last also watch all but put extreme focus on last history messages to connect it and then see all
 {history}
 
 Instructions:
@@ -818,7 +818,7 @@ User question: {query}
 Information retrieved from the physiotherapy knowledge base:
 {retrieved}
 
-History of Conversations
+History of Conversations always try to connect the current user query with the last questions and answers the last also watch all but put extreme focus on last history messages to connect it and then see all
 {history}
 
 Instructions:
