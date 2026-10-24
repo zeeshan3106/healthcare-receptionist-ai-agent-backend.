@@ -41,6 +41,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+with open('history.txt','r') as f:
+    history = f.read()
+
+print(len(history))
+
 
 
 class State(TypedDict):
@@ -273,6 +278,9 @@ User question: {query}
 Information retrieved from the eye care knowledge base:
 {retrieved}
 
+History of Conversations
+{history}
+
 Instructions:
 
 1. Answer questions about eye care services, specialists,
@@ -361,6 +369,10 @@ Respond only with the message intended for the user.
                 for word in text.split(' '):
                     writer(word + ' ')
                     time.sleep(0.03)
+    final_answer = ''.join(answer)
+    with open('history.txt', 'a', encoding='utf-8') as f:
+   
+        f.write(query + '\n' + final_answer + '\n')
 
     return {'answer': ''.join(answer)}
     
@@ -398,6 +410,9 @@ User question: {query}
 
 Information retrieved from the dental knowledge base:
 {retrieved}
+
+History of Conversations
+{history}
 
 Instructions:
 
@@ -488,6 +503,10 @@ Respond only with the message intended for the user.
                 for word in text.split(" "):
                     writer(word + " ")
                     time.sleep(0.03)
+    final_answer = ''.join(answer)
+    with open('history.txt', 'a', encoding='utf-8') as f:
+   
+        f.write(query + '\n' + final_answer + '\n')
 
     return {"answer": "".join(answer)}
 
@@ -512,6 +531,9 @@ User question: {query}
 
 Information retrieved from the speech pathology knowledge base:
 {retrieved}
+
+History of Conversations
+{history}
 
 Instructions:
 
@@ -604,7 +626,12 @@ Respond only with the message intended for the user.
                 for word in text.split(' '):
                     writer(word + ' ')
                     time.sleep(0.03)
-
+    final_answer = ''.join(answer)
+    with open('history.txt', 'a', encoding='utf-8') as f:
+   
+        f.write(query + '\n' + final_answer + '\n')
+        
+    print(len(history))
     return {'answer': ''.join(answer)}
 
 
@@ -630,6 +657,9 @@ User question: {query}
 
 Information retrieved from the mental health knowledge base:
 {retrieved}
+
+History of Conversations
+{history}
 
 Instructions:
 
@@ -732,7 +762,10 @@ Respond only with the message intended for the user.
                 for word in text.split(' '):
                     writer(word + ' ')
                     time.sleep(0.03)
-
+    final_answer = ''.join(answer)
+    with open('history.txt', 'a', encoding='utf-8') as f:
+   
+        f.write(query + '\n' + final_answer + '\n')
     return {'answer': ''.join(answer)}
 
 def Physio(State:State):
@@ -755,6 +788,9 @@ User question: {query}
 
 Information retrieved from the physiotherapy knowledge base:
 {retrieved}
+
+History of Conversations
+{history}
 
 Instructions:
 
@@ -845,7 +881,10 @@ Respond only with the message intended for the user.
                 for word in text.split(' '):
                     writer(word + ' ')
                     time.sleep(0.03)
-
+    final_answer = ''.join(answer)
+    with open('history.txt', 'a', encoding='utf-8') as f:
+   
+        f.write(query + '\n' + final_answer + '\n')
     return {'answer': ''.join(answer)}
 
 
@@ -880,7 +919,10 @@ def Hi(State:State):
                 for word in text.split(' '):
                     writer(word + ' ')
                     time.sleep(0.03)
-
+    final_answer = ''.join(answer)
+    with open('history.txt', 'a', encoding='utf-8') as f:
+   
+        f.write(query + '\n' + final_answer + '\n')
     return {'answer': ''.join(answer)}
 
 def condition(State:State):
@@ -930,6 +972,22 @@ workflow = graph.compile()
 @app.post('/Agent')
 def API(Query:str = Body(...)):
     config = {'configurable':{'thread_id':1}}
+    
+    with open('history.txt','r') as f:
+        history = f.read()
+        print(len(history))
+    history = len(history)
+
+    if history > 5000:
+        history = history[-5000:]
+    
+        with open('history.txt','w',  encoding='utf-8') as f:
+            f.write(' '.join(history))
+
+    
+
+
+
     initial_state ={'query':Query}
     return StreamingResponse(
         (
